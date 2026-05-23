@@ -77,13 +77,10 @@
   .cdate-arrow{color:var(--muted);font-weight:400}
   .cpct{border-radius:12px;padding:5px 11px;text-align:center;min-width:50px;border:1.5px solid;flex-shrink:0}
   .cpct span{font-size:15px;font-weight:800}
-  /* Tappable progress bar */
   .cbar-wrap{margin-top:10px;position:relative}
   .cbar-bg{height:11px;background:var(--mummy-mid);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;touch-action:manipulation}
   .cbar-bg:active{filter:brightness(.95)}
   .cbar-fill{height:100%;border-radius:10px;transition:width .25s;pointer-events:none}
-  .cbar-ticks{position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 2px;pointer-events:none}
-  .cbar-ticks span{width:1px;height:100%;background:rgba(255,255,255,.35)}
   .cbar-hint{font-size:10px;color:var(--muted);margin-top:3px;text-align:center;font-style:italic}
   html[lang=hi] .cbar-hint{font-style:normal;font-family:'Noto Sans Devanagari',sans-serif}
   .ccount{display:flex;gap:8px;margin-top:9px;font-size:11px;color:var(--sub);font-weight:600}
@@ -106,7 +103,38 @@
   .sh-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
   .sh-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--navy);line-height:1.15}
   html[lang=hi] .sh-title{font-family:'Noto Sans Devanagari',serif;font-size:22px}
-  .sh-date{font-size:14px;color:#3D0A22;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+
+  /* ── INLINE EDITABLE TITLE ── */
+  .sh-title-edit{
+    font-family:'Cormorant Garamond',serif;
+    font-size:24px;font-weight:700;
+    color:var(--navy);line-height:1.2;
+    width:100%;background:#fff;
+    border:1.5px dashed var(--mummy-mid);
+    resize:none;
+    padding:8px 10px;
+    border-radius:11px;
+    outline:none;
+    overflow:hidden;
+    transition:border-color .15s,background .15s,box-shadow .15s
+  }
+  html[lang=hi] .sh-title-edit{font-family:'Noto Sans Devanagari',serif;font-size:20px}
+  .sh-title-edit:hover{border-color:var(--mummy)}
+  .sh-title-edit:focus{border-color:var(--mummy);border-style:solid;background:#FFFCFD;box-shadow:0 0 0 3px rgba(233,30,140,.1)}
+  .sh-title-row{display:flex;gap:6px;align-items:flex-start}
+  .sh-title-row .btn-tr{width:42px;border-radius:11px;flex-shrink:0}
+  .edit-tag{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:4px;letter-spacing:.3px}
+  html[lang=hi] .edit-tag{letter-spacing:0}
+
+  /* ── INLINE EDITABLE DATES ── */
+  .sh-dates-edit{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .d-edit-item{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:5px 10px;cursor:pointer;transition:border-color .15s}
+  .d-edit-item:hover{border-color:var(--mummy-mid)}
+  .d-edit-item:focus-within{border-color:var(--mummy);box-shadow:0 0 0 3px rgba(233,30,140,.08)}
+  .d-edit-item input[type=date]{border:none;outline:none;font-size:13px;color:#3D0A22;font-weight:600;background:transparent;font-family:inherit;padding:0;min-width:0;width:118px}
+  .d-edit-item .icon{font-size:14px}
+  .d-arrow{color:var(--muted);font-weight:400;font-size:14px}
+
   .sh-close{background:#FAD4E5;border:none;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:10px}
   .flabel{font-size:13px;font-weight:700;color:var(--navy);display:block;margin-bottom:6px;letter-spacing:.3px}
   html[lang=hi] .flabel{letter-spacing:0}
@@ -254,7 +282,6 @@
         <button class="btn-tr" onclick="translateField('f-title')" title="Translate">🔄</button>
       </div>
       <div class="tr-hint" data-i18n="tr_hint">🔄 dabaa ke Hindi mein convert karein</div>
-
       <div class="date-grid">
         <div>
           <label data-i18n="start_date">🚀 Start Date</label>
@@ -265,7 +292,6 @@
           <input class="finput" id="f-date" type="date"/>
         </div>
       </div>
-
       <label class="flabel" data-i18n="notes_label">Notes (optional)</label>
       <div class="tr-row">
         <textarea class="ftextarea" id="f-notes" data-i18n-ph="notes_ph" placeholder="Detail..."></textarea>
@@ -282,12 +308,22 @@
     <div class="sh-body">
       <div class="sh-head">
         <div style="flex:1;min-width:0">
-          <div class="sh-title" id="d-title"></div>
-          <div class="sh-date" id="d-date"></div>
+          <div class="edit-tag">✏ <span data-i18n="tap_to_edit">Tap to edit</span></div>
+          <div class="sh-title-row">
+            <textarea class="sh-title-edit" id="d-title-edit" rows="1" oninput="autoSize(this)" onblur="commitTitle()"></textarea>
+            <button class="btn-tr" onclick="translateField('d-title-edit');setTimeout(commitTitle,300)" title="Translate">🔄</button>
+          </div>
+          <div class="sh-dates-edit">
+            <div class="d-edit-item"><span class="icon">🚀</span><input type="date" id="d-start-edit" onchange="updateDateField('startDate',this.value)"/></div>
+            <span class="d-arrow">→</span>
+            <div class="d-edit-item"><span class="icon">🏁</span><input type="date" id="d-end-edit" onchange="updateDateField('date',this.value)"/></div>
+            <span id="d-overdue-marker"></span>
+          </div>
         </div>
         <button class="sh-close" onclick="closeOverlay('ov-detail')">×</button>
       </div>
-      <div class="sec-wrap">
+
+      <div class="sec-wrap" style="margin-top:18px">
         <div class="prog-row">
           <div class="sec-title">📊 <span data-i18n="progress">Progress</span></div>
           <div class="prog-val" id="d-prog-val">0%</div>
@@ -388,7 +424,7 @@ const T={
     tr_empty:'Kuch likhein pehle',
     bar_hint:'👆 Tap progress bar to update',
     of:'of',done_word:'done',
-    no_tasks:'No tasks yet'
+    tap_to_edit:'Tap to edit title or dates'
   },
   hi:{
     brand:'परिवार के काम',beta_name:'पंडित बेटा जी',beta_role:'आपका बेटा',mummy_name:'मम्मी जी',mummy_role:'प्यारी माँ',
@@ -424,7 +460,7 @@ const T={
     tr_empty:'पहले कुछ लिखें',
     bar_hint:'👆 प्रगति बार दबाकर बदलें',
     of:'में से',done_word:'पूरे',
-    no_tasks:'अभी कोई काम नहीं'
+    tap_to_edit:'शीर्षक या तारीख बदलने के लिए दबाएं'
   }
 };
 function t(key){return (T[state.lang]||T.en)[key] ?? T.en[key] ?? key}
@@ -460,7 +496,7 @@ function displayTitle(task){if(state.lang==='hi'&&task.title_hi)return task.titl
 function displayNotes(task){if(state.lang==='hi'&&task.notes_hi)return task.notes_hi;if(state.lang==='en'&&task.notes_en)return task.notes_en;return task.notes}
 
 async function gtranslate(text,target){try{const url=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;const res=await fetch(url);if(!res.ok)throw 0;const data=await res.json();return data[0].map(p=>p[0]).join('')}catch(e){return null}}
-async function translateField(id){const el=document.getElementById(id);const text=(el.value||'').trim();if(!text){toast(t('tr_empty'));return}const btn=el.parentElement.querySelector('.btn-tr');btn.classList.add('busy');toast(t('tr_busy'));const out=await gtranslate(text,state.lang);btn.classList.remove('busy');if(out){el.value=out;toast(t('tr_ok'))}else toast(t('tr_fail'))}
+async function translateField(id){const el=document.getElementById(id);const text=(el.value||'').trim();if(!text){toast(t('tr_empty'));return}const btn=el.parentElement.querySelector('.btn-tr');btn.classList.add('busy');toast(t('tr_busy'));const out=await gtranslate(text,state.lang);btn.classList.remove('busy');if(out){el.value=out;if(id==='d-title-edit')autoSize(el);toast(t('tr_ok'))}else toast(t('tr_fail'))}
 
 function isOverdue(task){if(!task.date||task.progress>=100)return false;const today=new Date();today.setHours(0,0,0,0);const due=new Date(task.date+'T00:00');return due<today}
 function overduePill(big){return `<span class="overdue-pill ${big?'overdue-pill-lg':''}"><span class="star">⭐</span>${t('overdue')}</span>`}
@@ -471,23 +507,15 @@ function applyStaticI18n(){document.querySelectorAll('[data-i18n]').forEach(el=>
 function selectWho(w){state.currentWho=w;document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('active',c.dataset.who===w));save();toast(w==='beta'?t('greet_beta'):t('greet_mummy'));if(state.detailId&&document.getElementById('ov-detail').classList.contains('open'))renderDetail()}
 function setFilter(f){state.filter=f;document.querySelectorAll('.fpill').forEach(p=>p.classList.toggle('on',p.dataset.filter===f));render()}
 
-function dateRow(task){
-  const s=fmtDate(task.startDate);
-  const d=fmtDate(task.date);
-  if(s&&d)return `<span class="cdate-item"><span class="lbl">${t('start_lbl')}</span>🚀 ${s}</span><span class="cdate-arrow">→</span><span class="cdate-item"><span class="lbl">${t('due_lbl')}</span>🏁 ${d}</span>`;
-  if(d)return `<span class="cdate-item">🏁 ${d}</span>`;
-  if(s)return `<span class="cdate-item">🚀 ${s}</span>`;
-  return `<span class="cdate-item">📅 ${t('no_date')}</span>`;
-}
+function dateRow(task){const s=fmtDate(task.startDate);const d=fmtDate(task.date);if(s&&d)return `<span class="cdate-item"><span class="lbl">${t('start_lbl')}</span>🚀 ${s}</span><span class="cdate-arrow">→</span><span class="cdate-item"><span class="lbl">${t('due_lbl')}</span>🏁 ${d}</span>`;if(d)return `<span class="cdate-item">🏁 ${d}</span>`;if(s)return `<span class="cdate-item">🚀 ${s}</span>`;return `<span class="cdate-item">📅 ${t('no_date')}</span>`}
 
 function render(){
   const list=document.getElementById('list');
   let tasks=state.tasks.slice();
   if(state.filter!=='all')tasks=tasks.filter(x=>x.who===state.filter);
   tasks.sort((a,b)=>{const ao=isOverdue(a),bo=isOverdue(b);if(ao&&!bo)return -1;if(bo&&!ao)return 1;if(a.progress===100&&b.progress!==100)return 1;if(b.progress===100&&a.progress!==100)return -1;return(b.createdAt||0)-(a.createdAt||0)});
-  if(!tasks.length){
-    list.innerHTML=`<div id="empty"><div class="eicon">🌸</div><h2>${t('empty_title')}</h2><p>${t('empty_sub')}</p></div>`;
-  }else{
+  if(!tasks.length){list.innerHTML=`<div id="empty"><div class="eicon">🌸</div><h2>${t('empty_title')}</h2><p>${t('empty_sub')}</p></div>`}
+  else{
     list.innerHTML=tasks.map(task=>{
       const isBeta=task.who==='beta';
       const accent=isBeta?'var(--beta)':'var(--mummy)';
@@ -503,10 +531,7 @@ function render(){
           <div class="cleft">
             <span class="ctag ${isBeta?'beta':''}">${isBeta?t('tag_beta'):t('tag_mummy')}</span>
             <div class="ctitle">${esc(displayTitle(task))}</div>
-            <div class="cdate-row">
-              ${dateRow(task)}
-              ${od?overduePill():''}
-            </div>
+            <div class="cdate-row">${dateRow(task)}${od?overduePill():''}</div>
           </div>
           <div class="cpct" style="background:${bgSoft};border-color:${accent};color:${accent}"><span>${task.progress}%</span></div>
         </div>
@@ -520,30 +545,17 @@ function render(){
       </div>`;
     }).join('');
   }
-
-  // Top progress: count tasks done out of total (uses ALL tasks, not filtered)
   const all=state.tasks;
   const done=all.filter(x=>x.progress>=100).length;
   const total=all.length;
   const stat=document.getElementById('overall-stat');
-  if(total===0){stat.textContent='— ';}
-  else{stat.textContent=`${done} ${t('of')} ${total} ${t('done_word')}`;}
+  if(total===0)stat.textContent='— ';
+  else stat.textContent=`${done} ${t('of')} ${total} ${t('done_word')}`;
   if(total){const avg=Math.round(all.reduce((s,x)=>s+x.progress,0)/total);document.getElementById('overall-fill').style.width=avg+'%'}
   else document.getElementById('overall-fill').style.width='0%';
 }
 
-// Tappable progress bar — set % based on tap position
-function quickProg(e,id){
-  e.stopPropagation();
-  const bar=e.currentTarget;
-  const rect=bar.getBoundingClientRect();
-  const clientX=(e.touches&&e.touches[0]?e.touches[0].clientX:e.clientX);
-  const x=Math.max(0,Math.min(rect.width,clientX-rect.left));
-  let pct=Math.round((x/rect.width)*100/5)*5;
-  pct=Math.max(0,Math.min(100,pct));
-  const task=state.tasks.find(z=>z.id===id);
-  if(task){task.progress=pct;save();render();if(state.detailId===id&&document.getElementById('ov-detail').classList.contains('open'))renderDetail();toast(pct+'%')}
-}
+function quickProg(e,id){e.stopPropagation();const bar=e.currentTarget;const rect=bar.getBoundingClientRect();const clientX=(e.touches&&e.touches[0]?e.touches[0].clientX:e.clientX);const x=Math.max(0,Math.min(rect.width,clientX-rect.left));let pct=Math.round((x/rect.width)*100/5)*5;pct=Math.max(0,Math.min(100,pct));const task=state.tasks.find(z=>z.id===id);if(task){task.progress=pct;save();render();if(state.detailId===id&&document.getElementById('ov-detail').classList.contains('open'))renderDetail();toast(pct+'%')}}
 
 function pickWho(w){state.formWho=w;document.querySelectorAll('.who-opt').forEach(o=>o.classList.toggle('sel',o.dataset.who===w))}
 function openAdd(){state.editingId=null;document.getElementById('add-title').textContent=t('new_task');document.getElementById('f-title').value='';document.getElementById('f-start').value='';document.getElementById('f-date').value='';document.getElementById('f-notes').value='';pickWho(state.currentWho);document.getElementById('ov-add').classList.add('open')}
@@ -574,19 +586,41 @@ async function saveTask(){
 function deleteTask(){if(!state.detailId)return;if(!confirm(t('confirm_del_task')))return;state.tasks=state.tasks.filter(x=>x.id!==state.detailId);save();render();closeOverlay('ov-detail');toast(t('deleted'))}
 function openDetail(id){state.detailId=id;state.pendingPhoto=null;document.getElementById('pm-pending').classList.remove('show');document.getElementById('pm-text').value='';renderDetail();document.getElementById('ov-detail').classList.add('open')}
 
+// ─── Inline editable title ───
+function autoSize(el){el.style.height='auto';el.style.height=el.scrollHeight+'px'}
+async function commitTitle(){
+  const tk=state.tasks.find(x=>x.id===state.detailId);
+  if(!tk)return;
+  const el=document.getElementById('d-title-edit');
+  const newTitle=(el.value||'').trim();
+  if(!newTitle){el.value=displayTitle(tk);autoSize(el);return}
+  if(newTitle===displayTitle(tk))return;
+  if(state.lang==='hi'){tk.title_hi=newTitle;if(tk.title&&/[\u0900-\u097F]/.test(tk.title))tk.title=newTitle}
+  else{tk.title=newTitle;tk.title_en=newTitle}
+  save();render();toast(t('updated'));
+  // background translate to keep other lang in sync
+  const otherLang=state.lang==='hi'?'en':'hi';
+  const otherKey=otherLang==='hi'?'title_hi':'title_en';
+  const tr=await gtranslate(newTitle,otherLang);
+  if(tr){tk[otherKey]=tr;save();render()}
+}
+function updateDateField(field,value){
+  const tk=state.tasks.find(x=>x.id===state.detailId);
+  if(!tk)return;
+  tk[field]=value;
+  save();render();renderDetail();toast(t('updated'));
+}
+
 function renderDetail(){
   const tk=state.tasks.find(x=>x.id===state.detailId);
   if(!tk)return;
-  document.getElementById('d-title').textContent=displayTitle(tk);
+  const titleEl=document.getElementById('d-title-edit');
+  titleEl.value=displayTitle(tk);
+  setTimeout(()=>autoSize(titleEl),0);
+  document.getElementById('d-start-edit').value=tk.startDate||'';
+  document.getElementById('d-end-edit').value=tk.date||'';
   const od=isOverdue(tk);
-  const s=fmtDateFull(tk.startDate);
-  const d=fmtDateFull(tk.date);
-  let dateHTML='';
-  if(tk.startDate&&tk.date)dateHTML=`🚀 ${s} → 🏁 ${d}`;
-  else if(tk.date)dateHTML=`🏁 ${d}`;
-  else if(tk.startDate)dateHTML=`🚀 ${s}`;
-  else dateHTML=`📅 ${t('no_date')}`;
-  document.getElementById('d-date').innerHTML=`${dateHTML} ${od?overduePill(true):''}`;
+  document.getElementById('d-overdue-marker').innerHTML=od?overduePill(true):'';
   document.getElementById('d-prog-val').textContent=tk.progress+'%';
   document.getElementById('d-prog-fill').style.width=tk.progress+'%';
   const steps=[0,10,20,25,30,40,50,60,70,75,80,90,100];
