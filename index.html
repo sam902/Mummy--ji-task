@@ -47,7 +47,7 @@
   #overall-label{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
   #overall-label .l1{font-size:10px;color:#FFD9E8;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
   html[lang=hi] #overall-label .l1{font-family:'Noto Sans Devanagari',sans-serif;letter-spacing:0;text-transform:none;font-size:11px}
-  #overall-label .l2{font-size:12px;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
+  #overall-label .l2{font-size:13px;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
   html[lang=hi] #overall-label .l2{font-family:'Noto Sans Devanagari',serif}
   #overall-bg{height:5px;background:rgba(0,0,0,.25);border-radius:4px;overflow:hidden}
   #overall-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#FF9A56,#E91E8C);transition:width .5s;box-shadow:0 0 10px rgba(255,179,0,.5)}
@@ -70,12 +70,22 @@
   html[lang=hi] .ctag{letter-spacing:0;font-family:'Noto Sans Devanagari',sans-serif}
   .ctitle{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:4px;word-break:break-word}
   html[lang=hi] .ctitle{font-family:'Noto Sans Devanagari',serif}
-  .cdate-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-  .cdate{font-size:14px;color:#3D0A22;font-weight:600}
+  .cdate-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#3D0A22;font-weight:600}
+  .cdate-item{display:inline-flex;align-items:center;gap:3px}
+  .cdate-item .lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  html[lang=hi] .cdate-item .lbl{letter-spacing:0;text-transform:none}
+  .cdate-arrow{color:var(--muted);font-weight:400}
   .cpct{border-radius:12px;padding:5px 11px;text-align:center;min-width:50px;border:1.5px solid;flex-shrink:0}
   .cpct span{font-size:15px;font-weight:800}
-  .cbar-bg{height:7px;background:var(--mummy-mid);border-radius:10px;overflow:hidden}
-  .cbar-fill{height:100%;border-radius:10px;transition:width .4s}
+  /* Tappable progress bar */
+  .cbar-wrap{margin-top:10px;position:relative}
+  .cbar-bg{height:11px;background:var(--mummy-mid);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;touch-action:manipulation}
+  .cbar-bg:active{filter:brightness(.95)}
+  .cbar-fill{height:100%;border-radius:10px;transition:width .25s;pointer-events:none}
+  .cbar-ticks{position:absolute;inset:0;display:flex;justify-content:space-between;padding:0 2px;pointer-events:none}
+  .cbar-ticks span{width:1px;height:100%;background:rgba(255,255,255,.35)}
+  .cbar-hint{font-size:10px;color:var(--muted);margin-top:3px;text-align:center;font-style:italic}
+  html[lang=hi] .cbar-hint{font-style:normal;font-family:'Noto Sans Devanagari',sans-serif}
   .ccount{display:flex;gap:8px;margin-top:9px;font-size:11px;color:var(--sub);font-weight:600}
   .ccount span{display:inline-flex;align-items:center;gap:3px;background:#FFF0F5;border-radius:10px;padding:2px 8px}
   .overdue-pill{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);color:#92400E;font-size:10px;font-weight:800;border-radius:12px;padding:2px 8px 2px 6px;border:1px solid #FBBF24;letter-spacing:.3px;animation:overduePulse 2.5s ease-in-out infinite;line-height:1.2}
@@ -103,13 +113,16 @@
   .finput,.ftextarea{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:11px 13px;font-size:14px;color:var(--text);outline:none;margin-bottom:14px}
   .finput:focus,.ftextarea:focus{border-color:var(--mummy);box-shadow:0 0 0 3px rgba(233,30,140,.1)}
   .ftextarea{min-height:75px;resize:vertical;font-family:'DM Sans','Noto Sans Devanagari',sans-serif}
-  /* translate inline row */
   .tr-row{display:flex;gap:6px;align-items:stretch;margin-bottom:14px}
   .tr-row .finput,.tr-row .ftextarea{margin-bottom:0;flex:1}
   .btn-tr{background:linear-gradient(135deg,var(--gold),#FF9A56);border:none;color:#fff;width:48px;border-radius:13px;font-size:16px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(255,179,0,.35)}
   .btn-tr:active{transform:scale(.94)}
   .btn-tr.busy{opacity:.6;animation:pulse 1s infinite}
   .tr-hint{font-size:11px;color:var(--muted);margin-top:-10px;margin-bottom:10px;font-style:italic}
+  .date-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .date-grid .finput{margin-bottom:0}
+  .date-grid label{font-size:11px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;letter-spacing:.3px}
+  html[lang=hi] .date-grid label{letter-spacing:0}
   .who-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
   .who-opt{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:11px;text-align:center;cursor:pointer;font-weight:600;font-size:13px;color:var(--sub);transition:all .15s}
   .who-opt.sel.beta{background:linear-gradient(135deg,var(--beta-soft),var(--beta-mid));border-color:var(--beta);color:#1E3A8A}
@@ -208,7 +221,7 @@
     <div id="overall-wrap">
       <div id="overall-label">
         <span class="l1" data-i18n="overall_label">Saath mein progress</span>
-        <strong class="l2"><span id="overall-pct">0</span><span data-i18n="overall_complete">% complete</span></strong>
+        <strong class="l2" id="overall-stat">0 / 0</strong>
       </div>
       <div id="overall-bg"><div id="overall-fill" style="width:0%"></div></div>
     </div>
@@ -241,8 +254,18 @@
         <button class="btn-tr" onclick="translateField('f-title')" title="Translate">🔄</button>
       </div>
       <div class="tr-hint" data-i18n="tr_hint">🔄 dabaa ke Hindi mein convert karein</div>
-      <label class="flabel" data-i18n="due_date">Niyat Tareekh (Due Date)</label>
-      <input class="finput" id="f-date" type="date"/>
+
+      <div class="date-grid">
+        <div>
+          <label data-i18n="start_date">🚀 Start Date</label>
+          <input class="finput" id="f-start" type="date"/>
+        </div>
+        <div>
+          <label data-i18n="due_date">🏁 Due Date</label>
+          <input class="finput" id="f-date" type="date"/>
+        </div>
+      </div>
+
       <label class="flabel" data-i18n="notes_label">Notes (optional)</label>
       <div class="tr-row">
         <textarea class="ftextarea" id="f-notes" data-i18n-ph="notes_ph" placeholder="Detail..."></textarea>
@@ -333,12 +356,14 @@
 const T={
   en:{
     brand:'Parivaar Tasks',beta_name:'Pandit Beta Ji',beta_role:'Aapka Beta',mummy_name:'Mummy Ji',mummy_role:'Pyaari Maa',
-    overall_label:'Saath mein progress',overall_complete:'% complete',
+    overall_label:'Saath mein progress',
     filter_all:'All',filter_beta:"Beta Ji's",filter_mummy:"Mummy Ji's",
     empty_title:'Koi kaam nahi hai abhi',empty_sub:'+ button dabaa ke naya kaam add karein',
     new_task:'Naya Kaam',edit_task:'Edit Karein',whose_task:'Kiska kaam hai?',
     task_name:'Kaam ka naam',task_name_ph:'e.g. Doctor ki appointment',
-    due_date:'Niyat Tareekh (Due Date)',notes_label:'Notes (optional)',notes_ph:'Detail...',
+    start_date:'🚀 Start Date',due_date:'🏁 Due Date',
+    start_lbl:'Start',due_lbl:'Due',
+    notes_label:'Notes (optional)',notes_ph:'Detail...',
     save:'Save Karein',progress:'Progress',voice_photos:'Voice & Photos',
     tap_record:'Tap record to add voice note',recording:'Recording...',
     record:'Record',stop:'Stop',photo:'Photo',add_note:'Add a note...',
@@ -360,16 +385,21 @@ const T={
     overdue:'OVERDUE',delete_word:'delete',date_locale:'en-IN',
     tr_hint:'🔄 dabaa ke Hindi mein convert karein',
     tr_busy:'Translating...',tr_ok:'Translated ✓',tr_fail:'Translation failed',
-    tr_empty:'Kuch likhein pehle'
+    tr_empty:'Kuch likhein pehle',
+    bar_hint:'👆 Tap progress bar to update',
+    of:'of',done_word:'done',
+    no_tasks:'No tasks yet'
   },
   hi:{
     brand:'परिवार के काम',beta_name:'पंडित बेटा जी',beta_role:'आपका बेटा',mummy_name:'मम्मी जी',mummy_role:'प्यारी माँ',
-    overall_label:'साथ में प्रगति',overall_complete:'% पूरा',
+    overall_label:'साथ में प्रगति',
     filter_all:'सब',filter_beta:'बेटा जी के',filter_mummy:'मम्मी जी के',
     empty_title:'अभी कोई काम नहीं है',empty_sub:'+ बटन दबाकर नया काम जोड़ें',
     new_task:'नया काम',edit_task:'बदलें',whose_task:'किसका काम है?',
     task_name:'काम का नाम',task_name_ph:'जैसे डॉक्टर की अपॉइंटमेंट',
-    due_date:'नियत तारीख',notes_label:'नोट्स (वैकल्पिक)',notes_ph:'विवरण...',
+    start_date:'🚀 शुरू तारीख',due_date:'🏁 नियत तारीख',
+    start_lbl:'शुरू',due_lbl:'अंत',
+    notes_label:'नोट्स (वैकल्पिक)',notes_ph:'विवरण...',
     save:'सेव करें',progress:'प्रगति',voice_photos:'आवाज़ और फोटो',
     tap_record:'रिकॉर्ड दबाकर आवाज़ नोट जोड़ें',recording:'रिकॉर्डिंग चल रही है...',
     record:'रिकॉर्ड',stop:'रोकें',photo:'फोटो',add_note:'नोट लिखें...',
@@ -391,7 +421,10 @@ const T={
     overdue:'देर हो गई',delete_word:'हटाएं',date_locale:'hi-IN',
     tr_hint:'🔄 दबाकर हिंदी में बदलें',
     tr_busy:'अनुवाद हो रहा है...',tr_ok:'अनुवाद हो गया ✓',tr_fail:'अनुवाद नहीं हो सका',
-    tr_empty:'पहले कुछ लिखें'
+    tr_empty:'पहले कुछ लिखें',
+    bar_hint:'👆 प्रगति बार दबाकर बदलें',
+    of:'में से',done_word:'पूरे',
+    no_tasks:'अभी कोई काम नहीं'
   }
 };
 function t(key){return (T[state.lang]||T.en)[key] ?? T.en[key] ?? key}
@@ -399,114 +432,53 @@ function t(key){return (T[state.lang]||T.en)[key] ?? T.en[key] ?? key}
 let state={tasks:[],lang:localStorage.getItem('mk_lang')||'en',currentWho:localStorage.getItem('mk_who')||'beta',formWho:'beta',filter:'all',editingId:null,detailId:null,pendingPhoto:null,recorder:null,recChunks:[],recStartTs:0};
 try{state.tasks=JSON.parse(localStorage.getItem('mk_tasks_v2')||'[]')}catch(e){state.tasks=[]}
 
-// First-time seed (bilingual)
 if(state.tasks.length===0&&!localStorage.getItem('mk_seeded_v2')){
   state.tasks=[
-    {id:'t1',who:'mummy',
-      title:'Doctor ki appointment book karni hai',
-      title_hi:'डॉक्टर की अपॉइंटमेंट बुक करनी है',
-      title_en:"Book the doctor's appointment",
-      date:'2026-05-28',
-      notes:'Knee check-up ke liye',
-      notes_hi:'घुटने की जाँच के लिए',
-      notes_en:'For the knee check-up',
-      progress:30,createdAt:Date.now(),chat:[]},
-    {id:'t2',who:'beta',
-      title:'Mummy ke liye dawai laana',
-      title_hi:'मम्मी जी के लिए दवाई लानी है',
-      title_en:"Bring Mummy's medicine",
-      date:'2026-05-20',
-      notes:'BP medicine pharmacy se',
-      notes_hi:'फार्मेसी से बी॰पी॰ की दवाई',
-      notes_en:'BP medicine from the pharmacy',
-      progress:0,createdAt:Date.now()-3600000,chat:[]}
+    {id:'t1',who:'mummy',title:'Doctor ki appointment book karni hai',title_hi:'डॉक्टर की अपॉइंटमेंट बुक करनी है',title_en:"Book the doctor's appointment",startDate:'2026-05-22',date:'2026-05-28',notes:'Knee check-up ke liye',notes_hi:'घुटने की जाँच के लिए',notes_en:'For the knee check-up',progress:30,createdAt:Date.now(),chat:[]},
+    {id:'t2',who:'beta',title:'Mummy ke liye dawai laana',title_hi:'मम्मी जी के लिए दवाई लानी है',title_en:"Bring Mummy's medicine",startDate:'2026-05-18',date:'2026-05-20',notes:'BP medicine pharmacy se',notes_hi:'फार्मेसी से बी॰पी॰ की दवाई',notes_en:'BP medicine from the pharmacy',progress:0,createdAt:Date.now()-3600000,chat:[]}
   ];
   localStorage.setItem('mk_seeded_v2','1');save();
 }
 
-// Migration: add Hindi translations to existing seed tasks if missing
 if(!localStorage.getItem('mk_hindi_seeds_v2')){
   const t1=state.tasks.find(x=>x.id==='t1');
-  if(t1&&!t1.title_hi&&t1.title&&t1.title.toLowerCase().includes('doctor')){
-    t1.title_hi='डॉक्टर की अपॉइंटमेंट बुक करनी है';
-    t1.notes_hi='घुटने की जाँच के लिए';
-  }
+  if(t1&&!t1.title_hi&&t1.title&&t1.title.toLowerCase().includes('doctor')){t1.title_hi='डॉक्टर की अपॉइंटमेंट बुक करनी है';t1.notes_hi='घुटने की जाँच के लिए'}
   const t2=state.tasks.find(x=>x.id==='t2');
-  if(t2&&!t2.title_hi&&t2.title&&t2.title.toLowerCase().includes('dawai')){
-    t2.title_hi='मम्मी जी के लिए दवाई लानी है';
-    t2.notes_hi='फार्मेसी से बी॰पी॰ की दवाई';
-  }
-  localStorage.setItem('mk_hindi_seeds_v2','1');
-  save();
+  if(t2&&!t2.title_hi&&t2.title&&t2.title.toLowerCase().includes('dawai')){t2.title_hi='मम्मी जी के लिए दवाई लानी है';t2.notes_hi='फार्मेसी से बी॰पी॰ की दवाई'}
+  localStorage.setItem('mk_hindi_seeds_v2','1');save();
 }
 
 function save(){try{localStorage.setItem('mk_tasks_v2',JSON.stringify(state.tasks));localStorage.setItem('mk_who',state.currentWho);localStorage.setItem('mk_lang',state.lang)}catch(e){toast(t('storage_full'))}}
 function uid(){return 'x'+Date.now()+Math.random().toString(36).slice(2,7)}
 function esc(s){return(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
-function fmtDate(d){if(!d)return t('no_date');return new Date(d+'T00:00').toLocaleDateString(t('date_locale'),{weekday:'short',day:'numeric',month:'short'})}
+function fmtDate(d){if(!d)return null;return new Date(d+'T00:00').toLocaleDateString(t('date_locale'),{day:'numeric',month:'short'})}
+function fmtDateFull(d){if(!d)return t('no_date');return new Date(d+'T00:00').toLocaleDateString(t('date_locale'),{weekday:'short',day:'numeric',month:'short'})}
 function fmtTs(ts){return new Date(ts).toLocaleString(t('date_locale'),{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})}
 function whoLabel(w){return w==='beta'?t('beta_name'):t('mummy_name')}
 function whoEmoji(w){return w==='beta'?'👦':'👩'}
+function displayTitle(task){if(state.lang==='hi'&&task.title_hi)return task.title_hi;if(state.lang==='en'&&task.title_en)return task.title_en;return task.title}
+function displayNotes(task){if(state.lang==='hi'&&task.notes_hi)return task.notes_hi;if(state.lang==='en'&&task.notes_en)return task.notes_en;return task.notes}
 
-// ─── Display helpers: pick language-appropriate version ───
-function displayTitle(task){
-  if(state.lang==='hi'&&task.title_hi)return task.title_hi;
-  if(state.lang==='en'&&task.title_en)return task.title_en;
-  return task.title;
-}
-function displayNotes(task){
-  if(state.lang==='hi'&&task.notes_hi)return task.notes_hi;
-  if(state.lang==='en'&&task.notes_en)return task.notes_en;
-  return task.notes;
-}
+async function gtranslate(text,target){try{const url=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;const res=await fetch(url);if(!res.ok)throw 0;const data=await res.json();return data[0].map(p=>p[0]).join('')}catch(e){return null}}
+async function translateField(id){const el=document.getElementById(id);const text=(el.value||'').trim();if(!text){toast(t('tr_empty'));return}const btn=el.parentElement.querySelector('.btn-tr');btn.classList.add('busy');toast(t('tr_busy'));const out=await gtranslate(text,state.lang);btn.classList.remove('busy');if(out){el.value=out;toast(t('tr_ok'))}else toast(t('tr_fail'))}
 
-// ─── Google Translate (unofficial gtx endpoint) ───
-async function gtranslate(text,target){
-  try{
-    const url=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
-    const res=await fetch(url);
-    if(!res.ok)throw new Error('http');
-    const data=await res.json();
-    return data[0].map(p=>p[0]).join('');
-  }catch(e){return null}
-}
-async function translateField(id){
-  const el=document.getElementById(id);
-  const text=(el.value||'').trim();
-  if(!text){toast(t('tr_empty'));return}
-  const target=state.lang;
-  const btn=el.parentElement.querySelector('.btn-tr');
-  btn.classList.add('busy');
-  toast(t('tr_busy'));
-  const out=await gtranslate(text,target);
-  btn.classList.remove('busy');
-  if(out){el.value=out;toast(t('tr_ok'))}
-  else toast(t('tr_fail'))
-}
-
-// ─── OVERDUE ───
 function isOverdue(task){if(!task.date||task.progress>=100)return false;const today=new Date();today.setHours(0,0,0,0);const due=new Date(task.date+'T00:00');return due<today}
 function overduePill(big){return `<span class="overdue-pill ${big?'overdue-pill-lg':''}"><span class="star">⭐</span>${t('overdue')}</span>`}
 
-// ─── LANG ───
-function setLang(l){
-  state.lang=l;
-  document.documentElement.lang=l;
-  localStorage.setItem('mk_lang',l);
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
-  applyStaticI18n();render();
-  if(state.detailId&&document.getElementById('ov-detail').classList.contains('open'))renderDetail();
-}
-function applyStaticI18n(){
-  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.placeholder=t(el.dataset.i18nPh)});
-  const sel=document.getElementById('pm-who');
-  if(sel){sel.options[0].text='👦 '+t('beta_name');sel.options[1].text='👩 '+t('mummy_name')}
-  document.title=t('mummy_name')+' & '+t('beta_name')+' — '+t('brand');
-}
+function setLang(l){state.lang=l;document.documentElement.lang=l;localStorage.setItem('mk_lang',l);document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));applyStaticI18n();render();if(state.detailId&&document.getElementById('ov-detail').classList.contains('open'))renderDetail()}
+function applyStaticI18n(){document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t(el.dataset.i18n)});document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.placeholder=t(el.dataset.i18nPh)});const sel=document.getElementById('pm-who');if(sel){sel.options[0].text='👦 '+t('beta_name');sel.options[1].text='👩 '+t('mummy_name')}document.title=t('mummy_name')+' & '+t('beta_name')+' — '+t('brand')}
 
 function selectWho(w){state.currentWho=w;document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('active',c.dataset.who===w));save();toast(w==='beta'?t('greet_beta'):t('greet_mummy'));if(state.detailId&&document.getElementById('ov-detail').classList.contains('open'))renderDetail()}
 function setFilter(f){state.filter=f;document.querySelectorAll('.fpill').forEach(p=>p.classList.toggle('on',p.dataset.filter===f));render()}
+
+function dateRow(task){
+  const s=fmtDate(task.startDate);
+  const d=fmtDate(task.date);
+  if(s&&d)return `<span class="cdate-item"><span class="lbl">${t('start_lbl')}</span>🚀 ${s}</span><span class="cdate-arrow">→</span><span class="cdate-item"><span class="lbl">${t('due_lbl')}</span>🏁 ${d}</span>`;
+  if(d)return `<span class="cdate-item">🏁 ${d}</span>`;
+  if(s)return `<span class="cdate-item">🚀 ${s}</span>`;
+  return `<span class="cdate-item">📅 ${t('no_date')}</span>`;
+}
 
 function render(){
   const list=document.getElementById('list');
@@ -532,48 +504,66 @@ function render(){
             <span class="ctag ${isBeta?'beta':''}">${isBeta?t('tag_beta'):t('tag_mummy')}</span>
             <div class="ctitle">${esc(displayTitle(task))}</div>
             <div class="cdate-row">
-              <span class="cdate">📅 ${fmtDate(task.date)}</span>
+              ${dateRow(task)}
               ${od?overduePill():''}
             </div>
           </div>
           <div class="cpct" style="background:${bgSoft};border-color:${accent};color:${accent}"><span>${task.progress}%</span></div>
         </div>
-        <div class="cbar-bg"><div class="cbar-fill" style="width:${task.progress}%;background:linear-gradient(90deg,${accent},${grad2})"></div></div>
+        <div class="cbar-wrap" onclick="event.stopPropagation()">
+          <div class="cbar-bg" onclick="quickProg(event,'${task.id}')">
+            <div class="cbar-fill" style="width:${task.progress}%;background:linear-gradient(90deg,${accent},${grad2})"></div>
+          </div>
+          <div class="cbar-hint">${t('bar_hint')}</div>
+        </div>
         ${chat.length?`<div class="ccount">${textCnt?`<span>💬 ${textCnt}</span>`:''}${photoCnt?`<span>📷 ${photoCnt}</span>`:''}${voiceCnt?`<span>🎙 ${voiceCnt}</span>`:''}</div>`:''}
       </div>`;
     }).join('');
   }
+
+  // Top progress: count tasks done out of total (uses ALL tasks, not filtered)
   const all=state.tasks;
-  if(all.length){const avg=Math.round(all.reduce((s,x)=>s+x.progress,0)/all.length);document.getElementById('overall-pct').textContent=avg;document.getElementById('overall-fill').style.width=avg+'%'}
-  else{document.getElementById('overall-pct').textContent=0;document.getElementById('overall-fill').style.width='0%'}
+  const done=all.filter(x=>x.progress>=100).length;
+  const total=all.length;
+  const stat=document.getElementById('overall-stat');
+  if(total===0){stat.textContent='— ';}
+  else{stat.textContent=`${done} ${t('of')} ${total} ${t('done_word')}`;}
+  if(total){const avg=Math.round(all.reduce((s,x)=>s+x.progress,0)/total);document.getElementById('overall-fill').style.width=avg+'%'}
+  else document.getElementById('overall-fill').style.width='0%';
+}
+
+// Tappable progress bar — set % based on tap position
+function quickProg(e,id){
+  e.stopPropagation();
+  const bar=e.currentTarget;
+  const rect=bar.getBoundingClientRect();
+  const clientX=(e.touches&&e.touches[0]?e.touches[0].clientX:e.clientX);
+  const x=Math.max(0,Math.min(rect.width,clientX-rect.left));
+  let pct=Math.round((x/rect.width)*100/5)*5;
+  pct=Math.max(0,Math.min(100,pct));
+  const task=state.tasks.find(z=>z.id===id);
+  if(task){task.progress=pct;save();render();if(state.detailId===id&&document.getElementById('ov-detail').classList.contains('open'))renderDetail();toast(pct+'%')}
 }
 
 function pickWho(w){state.formWho=w;document.querySelectorAll('.who-opt').forEach(o=>o.classList.toggle('sel',o.dataset.who===w))}
-function openAdd(){state.editingId=null;document.getElementById('add-title').textContent=t('new_task');document.getElementById('f-title').value='';document.getElementById('f-date').value='';document.getElementById('f-notes').value='';pickWho(state.currentWho);document.getElementById('ov-add').classList.add('open')}
-function editBasic(){const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;state.editingId=tk.id;document.getElementById('add-title').textContent=t('edit_task');document.getElementById('f-title').value=displayTitle(tk);document.getElementById('f-date').value=tk.date||'';document.getElementById('f-notes').value=displayNotes(tk)||'';pickWho(tk.who);document.getElementById('ov-add').classList.add('open')}
+function openAdd(){state.editingId=null;document.getElementById('add-title').textContent=t('new_task');document.getElementById('f-title').value='';document.getElementById('f-start').value='';document.getElementById('f-date').value='';document.getElementById('f-notes').value='';pickWho(state.currentWho);document.getElementById('ov-add').classList.add('open')}
+function editBasic(){const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;state.editingId=tk.id;document.getElementById('add-title').textContent=t('edit_task');document.getElementById('f-title').value=displayTitle(tk);document.getElementById('f-start').value=tk.startDate||'';document.getElementById('f-date').value=tk.date||'';document.getElementById('f-notes').value=displayNotes(tk)||'';pickWho(tk.who);document.getElementById('ov-add').classList.add('open')}
 
 async function saveTask(){
   const titleInput=document.getElementById('f-title').value.trim();
   if(!titleInput){toast(t('name_needed'));return}
   const notesInput=document.getElementById('f-notes').value.trim();
   const date=document.getElementById('f-date').value;
+  const startDate=document.getElementById('f-start').value;
   const who=state.formWho;
-  // Store user input in current language slot; keep other lang if previously set
   let task;
   if(state.editingId){task=state.tasks.find(x=>x.id===state.editingId)}
   else{task={id:uid(),who,progress:0,createdAt:Date.now(),chat:[]};state.tasks.push(task)}
-  task.who=who;task.date=date;
-  if(state.lang==='hi'){
-    task.title_hi=titleInput;task.notes_hi=notesInput;
-    if(!task.title)task.title=titleInput;
-    if(!task.notes)task.notes=notesInput;
-  }else{
-    task.title=titleInput;task.notes=notesInput;
-    task.title_en=titleInput;task.notes_en=notesInput;
-  }
+  task.who=who;task.date=date;task.startDate=startDate;
+  if(state.lang==='hi'){task.title_hi=titleInput;task.notes_hi=notesInput;if(!task.title)task.title=titleInput;if(!task.notes)task.notes=notesInput}
+  else{task.title=titleInput;task.notes=notesInput;task.title_en=titleInput;task.notes_en=notesInput}
   save();render();if(state.detailId)renderDetail();closeOverlay('ov-add');
   toast(state.editingId?t('updated'):t('added'));
-  // Background: fill the OTHER language silently
   const otherLang=state.lang==='hi'?'en':'hi';
   const titleKey=otherLang==='hi'?'title_hi':'title_en';
   const notesKey=otherLang==='hi'?'notes_hi':'notes_en';
@@ -589,7 +579,14 @@ function renderDetail(){
   if(!tk)return;
   document.getElementById('d-title').textContent=displayTitle(tk);
   const od=isOverdue(tk);
-  document.getElementById('d-date').innerHTML=`📅 ${fmtDate(tk.date)} ${od?overduePill(true):''}`;
+  const s=fmtDateFull(tk.startDate);
+  const d=fmtDateFull(tk.date);
+  let dateHTML='';
+  if(tk.startDate&&tk.date)dateHTML=`🚀 ${s} → 🏁 ${d}`;
+  else if(tk.date)dateHTML=`🏁 ${d}`;
+  else if(tk.startDate)dateHTML=`🚀 ${s}`;
+  else dateHTML=`📅 ${t('no_date')}`;
+  document.getElementById('d-date').innerHTML=`${dateHTML} ${od?overduePill(true):''}`;
   document.getElementById('d-prog-val').textContent=tk.progress+'%';
   document.getElementById('d-prog-fill').style.width=tk.progress+'%';
   const steps=[0,10,20,25,30,40,50,60,70,75,80,90,100];
@@ -604,9 +601,8 @@ function renderDetail(){
   document.getElementById('pm-who').value=w;
   const chat=(tk.chat||[]).slice().sort((a,b)=>b.ts-a.ts);
   document.getElementById('d-hist-count').textContent=chat.length;
-  if(!chat.length){
-    document.getElementById('d-hist').innerHTML=`<div class="hist-empty">${t('no_messages')}</div>`;
-  }else{
+  if(!chat.length){document.getElementById('d-hist').innerHTML=`<div class="hist-empty">${t('no_messages')}</div>`}
+  else{
     document.getElementById('d-hist').innerHTML=chat.map(c=>{
       const av=c.author==='beta'?'beta-side':'';
       let body='';
@@ -621,35 +617,12 @@ function renderDetail(){
 function setProg(v){const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.progress=v;save();render();renderDetail()}
 function saveNoteQuick(){const txt=document.getElementById('vp-note').value.trim();if(!txt){toast(t('note_needed'));return}const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.chat=tk.chat||[];tk.chat.push({id:uid(),author:state.currentWho,type:'text',content:txt,ts:Date.now()});save();renderDetail();render();document.getElementById('vp-note').value='';toast(t('note_saved'))}
 function addPhotoQuick(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.chat=tk.chat||[];tk.chat.push({id:uid(),author:state.currentWho,type:'photo',content:e.target.result,ts:Date.now()});save();renderDetail();render();toast(t('photo_added'))};r.readAsDataURL(f);input.value=''}
-async function toggleRec(){
-  const btn=document.getElementById('vp-rec');
-  if(state.recorder&&state.recorder.state==='recording'){state.recorder.stop();return}
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    state.recChunks=[];state.recStartTs=Date.now();
-    state.recorder=new MediaRecorder(stream);
-    state.recorder.ondataavailable=e=>state.recChunks.push(e.data);
-    state.recorder.onstop=()=>{
-      stream.getTracks().forEach(s=>s.stop());
-      const blob=new Blob(state.recChunks,{type:'audio/webm'});
-      const dur=Math.round((Date.now()-state.recStartTs)/1000);
-      const m=Math.floor(dur/60),s=dur%60;const durStr=m+':'+String(s).padStart(2,'0');
-      const r=new FileReader();
-      r.onload=ev=>{const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.chat=tk.chat||[];tk.chat.push({id:uid(),author:state.currentWho,type:'voice',content:ev.target.result,duration:durStr,ts:Date.now()});save();renderDetail();render();toast(t('voice_saved'))};
-      r.readAsDataURL(blob);
-      btn.classList.remove('recording');btn.innerHTML='🎙 '+t('record');
-      document.getElementById('vp-status').textContent=t('tap_record');
-    };
-    state.recorder.start();
-    btn.classList.add('recording');btn.innerHTML='⏹ '+t('stop');
-    document.getElementById('vp-status').textContent=t('recording');
-  }catch(e){toast(t('mic_denied'))}
-}
+async function toggleRec(){const btn=document.getElementById('vp-rec');if(state.recorder&&state.recorder.state==='recording'){state.recorder.stop();return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});state.recChunks=[];state.recStartTs=Date.now();state.recorder=new MediaRecorder(stream);state.recorder.ondataavailable=e=>state.recChunks.push(e.data);state.recorder.onstop=()=>{stream.getTracks().forEach(s=>s.stop());const blob=new Blob(state.recChunks,{type:'audio/webm'});const dur=Math.round((Date.now()-state.recStartTs)/1000);const m=Math.floor(dur/60),s=dur%60;const durStr=m+':'+String(s).padStart(2,'0');const r=new FileReader();r.onload=ev=>{const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.chat=tk.chat||[];tk.chat.push({id:uid(),author:state.currentWho,type:'voice',content:ev.target.result,duration:durStr,ts:Date.now()});save();renderDetail();render();toast(t('voice_saved'))};r.readAsDataURL(blob);btn.classList.remove('recording');btn.innerHTML='🎙 '+t('record');document.getElementById('vp-status').textContent=t('tap_record')};state.recorder.start();btn.classList.add('recording');btn.innerHTML='⏹ '+t('stop');document.getElementById('vp-status').textContent=t('recording')}catch(e){toast(t('mic_denied'))}}
 function playVoice(cid,btn){const tk=state.tasks.find(x=>x.id===state.detailId);const c=(tk.chat||[]).find(x=>x.id===cid);if(!c)return;const audio=new Audio(c.content);const bar=btn.parentElement.querySelector('.bar div');btn.textContent='⏸';audio.play();audio.ontimeupdate=()=>{if(audio.duration)bar.style.width=(audio.currentTime/audio.duration*100)+'%'};audio.onended=()=>{btn.textContent='▶';bar.style.width='0%'}}
 function addPostPhoto(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{state.pendingPhoto=e.target.result;document.getElementById('pm-pending-img').src=e.target.result;document.getElementById('pm-pending').classList.add('show')};r.readAsDataURL(f);input.value=''}
 function clearPendingPhoto(){state.pendingPhoto=null;document.getElementById('pm-pending').classList.remove('show')}
 function postMessage(){const txt=document.getElementById('pm-text').value.trim();const who=document.getElementById('pm-who').value;if(!txt&&!state.pendingPhoto){toast(t('msg_needed'));return}const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;tk.chat=tk.chat||[];if(state.pendingPhoto){tk.chat.push({id:uid(),author:who,type:'photo',content:state.pendingPhoto,caption:txt,ts:Date.now()})}else{tk.chat.push({id:uid(),author:who,type:'text',content:txt,ts:Date.now()})}document.getElementById('pm-text').value='';clearPendingPhoto();save();renderDetail();render();toast(t('posted'))}
-function shareWhatsApp(){const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;const txt=document.getElementById('pm-text').value.trim();let msg=`*${displayTitle(tk)}* (${tk.progress}%)\n📅 ${fmtDate(tk.date)}\n`;if(txt)msg+=`\n${txt}\n`;msg+=`\n— ${whoLabel(document.getElementById('pm-who').value)}`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
+function shareWhatsApp(){const tk=state.tasks.find(x=>x.id===state.detailId);if(!tk)return;const txt=document.getElementById('pm-text').value.trim();let msg=`*${displayTitle(tk)}* (${tk.progress}%)\n`;if(tk.startDate)msg+=`🚀 ${fmtDateFull(tk.startDate)}\n`;if(tk.date)msg+=`🏁 ${fmtDateFull(tk.date)}\n`;if(txt)msg+=`\n${txt}\n`;msg+=`\n— ${whoLabel(document.getElementById('pm-who').value)}`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank')}
 function delChat(cid){if(!confirm(t('confirm_del_msg')))return;const tk=state.tasks.find(x=>x.id===state.detailId);tk.chat=(tk.chat||[]).filter(c=>c.id!==cid);save();renderDetail();render()}
 function showLB(cid){const tk=state.tasks.find(x=>x.id===state.detailId);const c=(tk.chat||[]).find(x=>x.id===cid);if(!c)return;document.getElementById('lb-img').src=c.content;document.getElementById('lightbox').classList.add('open')}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
