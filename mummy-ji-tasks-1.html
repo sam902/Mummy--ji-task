@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Mummy Ji & Pandit Beta Ji — Family Tasks</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#FFF0F5;--card:#FFF;--navy:#6D1B4A;--navy2:#8B2560;
+    --me:#2563EB;--mummy:#E91E8C;
+    --border:#F8D7E3;--muted:#C48FAA;--text:#4A1530;--sub:#7A3B5A;
+    --red:#F43F5E;--amber:#F59E0B;--green:#10B981;--gold:#FFB300
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh;overscroll-behavior:none}
+  input,textarea,button,select{font-family:'DM Sans',sans-serif}
+  ::-webkit-scrollbar{width:0}
+  #app{max-width:480px;margin:0 auto;min-height:100vh}
+
+  /* ── HEADER BANNER ── */
+  #header{
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255,179,0,.18), transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(233,30,140,.25), transparent 55%),
+      linear-gradient(145deg,#C2185B,#880E4F 60%,#5B0834);
+    padding:22px 20px 20px;
+    position:sticky;top:0;z-index:20;
+    border-bottom:3px solid var(--gold);
+    box-shadow:0 4px 14px rgba(91,8,52,.25)
+  }
+  #header::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size:14px 14px;
+    pointer-events:none;opacity:.6
+  }
+
+  /* App name */
+  #brand-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1}
+  #brand-name{
+    font-family:'Cormorant Garamond',serif;
+    font-size:18px;font-weight:600;color:#FFD9E8;
+    letter-spacing:1px;text-transform:uppercase
+  }
+  #brand-name::before{content:"✦ ";color:var(--gold)}
+  #brand-name::after{content:" ✦";color:var(--gold)}
+  #settings-btn{background:rgba(255,255,255,.1);border:none;width:34px;height:34px;border-radius:50%;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+  /* The two big profile cards */
+  #profiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1}
+  .pcard{
+    background:rgba(255,255,255,.08);
+    border:1.5px solid rgba(255,255,255,.18);
+    border-radius:18px;
+    padding:14px 10px 12px;
+    text-align:center;
+    backdrop-filter:blur(8px);
+    transition:transform .18s,border-color .18s,background .18s;
+    cursor:pointer;
+    position:relative;overflow:hidden
+  }
+  .pcard.active{
+    background:rgba(255,255,255,.16);
+    border-color:var(--gold);
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(0,0,0,.25)
+  }
+  .pcard.active::after{
+    content:"●";position:absolute;top:6px;right:10px;
+    color:var(--green);font-size:10px;
+    text-shadow:0 0 8px var(--green)
+  }
+  .pic{
+    width:62px;height:62px;border-radius:50%;
+    margin:0 auto 7px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:34px;
+    border:2.5px solid;
+    background:linear-gradient(160deg,#FFE8F2,#FAD4E5)
+  }
+  .pcard.beta .pic{border-color:#7CC4FF;background:linear-gradient(160deg,#E8F2FF,#C7DEFB)}
+  .pcard.mummy .pic{border-color:#FFC9DE;background:linear-gradient(160deg,#FFE8F2,#FAD4E5)}
+  .pname{
+    font-family:'Cormorant Garamond',serif;
+    font-size:22px;font-weight:700;
+    color:#fff;line-height:1.05;
+    letter-spacing:-.3px;
+    text-shadow:0 1px 4px rgba(0,0,0,.3)
+  }
+  .prole{
+    font-size:10px;font-weight:600;letter-spacing:1.2px;
+    text-transform:uppercase;color:#FFD9E8;margin-top:3px
+  }
+  .pcard.beta .prole{color:#C7DEFB}
+
+  /* Overall progress */
+  #overall-wrap{margin-top:14px;position:relative;z-index:1}
+  #overall-label{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
+  #overall-label .l1{font-size:10px;color:#FFD9E8;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
+  #overall-label .l2{font-size:12px;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
+  #overall-bg{height:5px;background:rgba(0,0,0,.25);border-radius:4px;overflow:hidden}
+  #overall-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),#FF9A56,#E91E8C);transition:width .5s;box-shadow:0 0 10px rgba(255,179,0,.5)}
+
+  /* ── LIST ── */
+  #list{padding:14px 14px 110px}
+  #empty{text-align:center;padding:60px 30px}
+  #empty .eicon{font-size:52px;margin-bottom:16px}
+  #empty h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px}
+  #empty p{font-size:13px;color:var(--muted);line-height:1.7}
+
+  .task-card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:15px 17px;margin-bottom:11px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.04);transition:box-shadow .18s,transform .18s;animation:fadeUp .35s ease both}
+  .task-card:hover{box-shadow:0 6px 22px rgba(233,30,140,.13);transform:translateY(-2px)}
+  .ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px}
+  .cleft{flex:1;margin-right:11px}
+  .ctag{display:inline-block;background:#FFF0F7;color:var(--mummy);font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;letter-spacing:.5px;margin-bottom:4px}
+  .ctag.beta{background:#E8F2FF;color:#2563EB}
+  .ctitle{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:4px}
+  .cdate{font-size:14px;color:#3D0A22;font-weight:600}
+  .cpct{border-radius:12px;padding:5px 11px;text-align:center;min-width:50px;border:1.5px solid;flex-shrink:0}
+  .cpct span{font-size:15px;font-weight:800}
+  .cbar-bg{height:7px;background:#FAD4E5;border-radius:10px;overflow:hidden}
+  .cbar-fill{height:100%;border-radius:10px;transition:width .4s}
+  .cbadge-row{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+  .cbadge{display:flex;align-items:center;gap:4px;background:#FDE8F0;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:700;color:#6D1B4A}
+  .cbadge .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+  /* FAB */
+  #fab{position:fixed;bottom:28px;right:20px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--mummy),#F472B6);color:#fff;border:none;font-size:28px;cursor:pointer;box-shadow:0 6px 22px rgba(233,30,140,.45);display:flex;align-items:center;justify-content:center;transition:transform .15s;z-index:50}
+  #fab:active{transform:scale(.93)}
+
+  /* Sheet */
+  .overlay{position:fixed;inset:0;background:rgba(18,28,40,.55);z-index:100;display:flex;align-items:flex-end;opacity:0;transition:opacity .25s;pointer-events:none}
+  .overlay.open{opacity:1;pointer-events:all}
+  .sheet{background:var(--bg);border-radius:26px 26px 0 0;width:100%;max-width:480px;margin:0 auto;max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.1,.64,1)}
+  .overlay.open .sheet{transform:translateY(0)}
+  .sh-handle{display:flex;justify-content:center;padding:11px 0 0}
+  .sh-handle div{width:42px;height:4px;background:#DDD;border-radius:2px}
+  .sh-body{padding:15px 19px 50px}
+  .sh-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+  .sh-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy);line-height:1.2}
+  .sh-close{background:#FAD4E5;border:none;width:34px;height:34px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:10px}
+
+  .flabel{font-size:13px;font-weight:700;color:var(--navy);display:block;margin-bottom:6px;letter-spacing:.3px}
+  .finput,.ftextarea,.fselect{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:11px 13px;font-size:14px;color:var(--text);outline:none;margin-bottom:14px;transition:border-color .15s}
+  .finput:focus,.ftextarea:focus,.fselect:focus{border-color:var(--mummy);box-shadow:0 0 0 3px rgba(233,30,140,.1)}
+  .ftextarea{min-height:75px;resize:vertical}
+  .frange{width:100%;accent-color:var(--mummy);margin-bottom:14px}
+
+  .who-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+  .who-opt{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:11px;text-align:center;cursor:pointer;font-weight:600;font-size:13px;color:var(--sub);transition:all .15s}
+  .who-opt.sel.beta{background:linear-gradient(135deg,#E8F2FF,#C7DEFB);border-color:#2563EB;color:#1E3A8A}
+  .who-opt.sel.mummy{background:linear-gradient(135deg,#FFE8F2,#FAD4E5);border-color:var(--mummy);color:#9D174D}
+  .who-opt .emoji{font-size:22px;display:block;margin-bottom:4px}
+
+  .btn-main{width:100%;background:linear-gradient(135deg,var(--mummy),#F472B6);color:#fff;border:none;border-radius:15px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(233,30,140,.35);transition:transform .15s}
+  .btn-main:active{transform:scale(.98)}
+  .btn-danger{width:100%;background:transparent;border:1.5px solid #FECDD3;color:var(--red);border-radius:15px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px}
+
+  /* Toast */
+  #toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#880E4F;color:#fff;border-radius:30px;padding:10px 22px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap;z-index:300}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Empty filter state */
+  .filter-pills{display:flex;gap:6px;margin-bottom:12px;padding:0 2px}
+  .fpill{background:#fff;border:1.5px solid var(--border);border-radius:20px;padding:6px 13px;font-size:12px;font-weight:600;color:var(--sub);cursor:pointer;transition:all .15s}
+  .fpill.on{background:linear-gradient(135deg,#FFE8F2,#FAD4E5);border-color:var(--mummy);color:#9D174D}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER BANNER -->
+  <div id="header">
+    <div id="brand-row">
+      <div id="brand-name">Parivaar Tasks</div>
+      <button id="settings-btn" title="Settings">⚙</button>
+    </div>
+
+    <div id="profiles">
+      <div class="pcard beta active" data-who="beta" onclick="selectWho('beta')">
+        <div class="pic">👦</div>
+        <div class="pname">Pandit Beta Ji</div>
+        <div class="prole">Aapka Beta</div>
+      </div>
+      <div class="pcard mummy" data-who="mummy" onclick="selectWho('mummy')">
+        <div class="pic">👩</div>
+        <div class="pname">Mummy Ji</div>
+        <div class="prole">Pyaari Maa</div>
+      </div>
+    </div>
+
+    <div id="overall-wrap">
+      <div id="overall-label">
+        <span class="l1">Saath mein progress</span>
+        <strong class="l2"><span id="overall-pct">0</span>% complete</strong>
+      </div>
+      <div id="overall-bg"><div id="overall-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- FILTER PILLS -->
+  <div style="padding:14px 14px 0">
+    <div class="filter-pills">
+      <div class="fpill on" data-filter="all" onclick="setFilter('all')">All</div>
+      <div class="fpill" data-filter="beta" onclick="setFilter('beta')">Beta Ji's</div>
+      <div class="fpill" data-filter="mummy" onclick="setFilter('mummy')">Mummy Ji's</div>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div id="list"></div>
+
+  <!-- FAB -->
+  <button id="fab" onclick="openSheet('add')" title="Naya kaam">+</button>
+</div>
+
+<!-- ADD/EDIT SHEET -->
+<div class="overlay" id="ov-add">
+  <div class="sheet">
+    <div class="sh-handle"><div></div></div>
+    <div class="sh-body">
+      <div class="sh-head">
+        <div class="sh-title" id="sh-title">Naya Kaam</div>
+        <button class="sh-close" onclick="closeSheet('add')">×</button>
+      </div>
+
+      <label class="flabel">Kiska kaam hai?</label>
+      <div class="who-toggle">
+        <div class="who-opt beta sel" data-who="beta" onclick="pickWho('beta')">
+          <span class="emoji">👦</span>
+          Pandit Beta Ji
+        </div>
+        <div class="who-opt mummy" data-who="mummy" onclick="pickWho('mummy')">
+          <span class="emoji">👩</span>
+          Mummy Ji
+        </div>
+      </div>
+
+      <label class="flabel">Kaam ka naam</label>
+      <input class="finput" id="f-title" placeholder="e.g. Doctor ke paas jaana"/>
+
+      <label class="flabel">Tareekh (optional)</label>
+      <input class="finput" id="f-date" type="date"/>
+
+      <label class="flabel">Detail / Notes (optional)</label>
+      <textarea class="ftextarea" id="f-notes" placeholder="Kya karna hai..."></textarea>
+
+      <label class="flabel">Progress: <span id="f-prog-val">0</span>%</label>
+      <input class="frange" id="f-prog" type="range" min="0" max="100" step="5" value="0" oninput="document.getElementById('f-prog-val').textContent=this.value"/>
+
+      <button class="btn-main" onclick="saveTask()">Save Karein</button>
+      <button class="btn-danger" id="del-btn" style="display:none" onclick="deleteTask()">Delete Karein</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ─── STATE ───
+  let state = {
+    tasks: JSON.parse(localStorage.getItem('mk_tasks') || '[]'),
+    currentWho: localStorage.getItem('mk_current_who') || 'beta',
+    formWho: 'beta',
+    filter: 'all',
+    editingId: null
+  };
+
+  // seed if empty (first launch only)
+  if (state.tasks.length === 0 && !localStorage.getItem('mk_seeded')) {
+    state.tasks = [
+      {id:'t1', who:'mummy', title:'Doctor ki appointment book karni hai', date:'2026-05-28', notes:'Knee check-up ke liye', progress:30, createdAt:Date.now()},
+      {id:'t2', who:'beta', title:'Mummy ke liye dawai laana', date:'2026-05-25', notes:'Pharmacy se BP ki medicine', progress:0, createdAt:Date.now()-3600000},
+      {id:'t3', who:'beta', title:'Bills pay karne hain', date:'', notes:'Electricity + phone', progress:70, createdAt:Date.now()-7200000}
+    ];
+    localStorage.setItem('mk_seeded','1');
+    save();
+  }
+
+  function save(){
+    localStorage.setItem('mk_tasks', JSON.stringify(state.tasks));
+    localStorage.setItem('mk_current_who', state.currentWho);
+  }
+
+  // ─── PROFILE SELECT ───
+  function selectWho(w){
+    state.currentWho = w;
+    document.querySelectorAll('.pcard').forEach(c=>c.classList.toggle('active', c.dataset.who===w));
+    save();
+    toast(w==='beta' ? 'Welcome back, Pandit Beta Ji 👦' : 'Namaste, Mummy Ji 🙏');
+  }
+
+  function setFilter(f){
+    state.filter = f;
+    document.querySelectorAll('.fpill').forEach(p=>p.classList.toggle('on', p.dataset.filter===f));
+    render();
+  }
+
+  // ─── RENDER ───
+  function render(){
+    const list = document.getElementById('list');
+    let tasks = state.tasks.slice();
+    if (state.filter !== 'all') tasks = tasks.filter(t=>t.who===state.filter);
+    tasks.sort((a,b)=>{
+      if (a.progress===100 && b.progress!==100) return 1;
+      if (b.progress===100 && a.progress!==100) return -1;
+      return (b.createdAt||0) - (a.createdAt||0);
+    });
+
+    if (tasks.length===0){
+      list.innerHTML = `<div id="empty"><div class="eicon">🌸</div><h2>Koi kaam nahi hai abhi</h2><p>+ button dabaa ke naya kaam add karein<br/>Mummy Ji aur Beta Ji ke liye.</p></div>`;
+    } else {
+      list.innerHTML = tasks.map(t=>{
+        const isBeta = t.who==='beta';
+        const isMummy = t.who==='mummy';
+        const accent = isBeta ? '#2563EB' : '#E91E8C';
+        const bgAccent = isBeta ? '#E8F2FF' : '#FDE8F0';
+        const dateStr = t.date ? new Date(t.date+'T00:00').toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'}) : 'Koi date nahi';
+        return `
+          <div class="task-card" onclick="editTask('${t.id}')">
+            <div class="ctop">
+              <div class="cleft">
+                <span class="ctag ${isBeta?'beta':''}">${isBeta?'PANDIT BETA JI':'MUMMY JI'}</span>
+                <div class="ctitle">${escapeHtml(t.title)}</div>
+                <div class="cdate">📅 ${dateStr}</div>
+              </div>
+              <div class="cpct" style="background:${bgAccent};border-color:${accent};color:${accent}">
+                <span>${t.progress}%</span>
+              </div>
+            </div>
+            <div class="cbar-bg"><div class="cbar-fill" style="width:${t.progress}%;background:linear-gradient(90deg,${accent},${isBeta?'#60A5FA':'#F472B6'})"></div></div>
+            ${t.notes ? `<div style="margin-top:9px;font-size:13px;color:#7A3B5A;line-height:1.5">${escapeHtml(t.notes)}</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    // overall progress (filtered set)
+    if (tasks.length){
+      const avg = Math.round(tasks.reduce((s,t)=>s+t.progress,0)/tasks.length);
+      document.getElementById('overall-pct').textContent = avg;
+      document.getElementById('overall-fill').style.width = avg+'%';
+    } else {
+      document.getElementById('overall-pct').textContent = 0;
+      document.getElementById('overall-fill').style.width = '0%';
+    }
+  }
+
+  function escapeHtml(s){return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m])}
+
+  // ─── ADD / EDIT ───
+  function pickWho(w){
+    state.formWho = w;
+    document.querySelectorAll('.who-opt').forEach(o=>o.classList.toggle('sel', o.dataset.who===w));
+  }
+
+  function openSheet(){
+    document.getElementById('ov-add').classList.add('open');
+  }
+  function closeSheet(){
+    document.getElementById('ov-add').classList.remove('open');
+    state.editingId = null;
+  }
+
+  document.getElementById('ov-add').addEventListener('click',e=>{
+    if (e.target.id==='ov-add') closeSheet();
+  });
+
+  function editTask(id){
+    const t = state.tasks.find(x=>x.id===id);
+    if (!t) return;
+    state.editingId = id;
+    document.getElementById('sh-title').textContent = 'Kaam edit karein';
+    document.getElementById('f-title').value = t.title;
+    document.getElementById('f-date').value = t.date || '';
+    document.getElementById('f-notes').value = t.notes || '';
+    document.getElementById('f-prog').value = t.progress;
+    document.getElementById('f-prog-val').textContent = t.progress;
+    pickWho(t.who);
+    document.getElementById('del-btn').style.display = 'block';
+    openSheet();
+  }
+
+  document.getElementById('fab').addEventListener('click',()=>{
+    state.editingId = null;
+    document.getElementById('sh-title').textContent = 'Naya Kaam';
+    document.getElementById('f-title').value = '';
+    document.getElementById('f-date').value = '';
+    document.getElementById('f-notes').value = '';
+    document.getElementById('f-prog').value = 0;
+    document.getElementById('f-prog-val').textContent = 0;
+    pickWho(state.currentWho);
+    document.getElementById('del-btn').style.display = 'none';
+  });
+
+  function saveTask(){
+    const title = document.getElementById('f-title').value.trim();
+    if (!title){ toast('Kaam ka naam zaroori hai'); return; }
+    const data = {
+      title,
+      date: document.getElementById('f-date').value,
+      notes: document.getElementById('f-notes').value.trim(),
+      progress: parseInt(document.getElementById('f-prog').value,10),
+      who: state.formWho
+    };
+    if (state.editingId){
+      const t = state.tasks.find(x=>x.id===state.editingId);
+      Object.assign(t, data);
+      toast('Updated ✓');
+    } else {
+      state.tasks.push({id:'t'+Date.now(), ...data, createdAt:Date.now()});
+      toast('Add ho gaya ✓');
+    }
+    save();
+    render();
+    closeSheet();
+  }
+
+  function deleteTask(){
+    if (!state.editingId) return;
+    if (!confirm('Pakka delete karna hai?')) return;
+    state.tasks = state.tasks.filter(x=>x.id!==state.editingId);
+    save();
+    render();
+    closeSheet();
+    toast('Delete ho gaya');
+  }
+
+  // ─── TOAST ───
+  let toastT;
+  function toast(msg){
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(()=>el.classList.remove('show'), 2200);
+  }
+
+  // init
+  selectWho(state.currentWho);
+  render();
+</script>
+</body>
+</html>
