@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Mummy Ji & Pandit Beta Ji — Parivaar Tasks</title>
+<title>Mummy Ji & Kartik — Parivaar Tasks</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   :root{
@@ -65,29 +65,29 @@
   .task-card.overdue{border-color:rgba(245,158,11,.5)}
   .ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px}
   .cleft{flex:1;margin-right:11px;min-width:0}
-  .ctag{display:inline-block;font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;letter-spacing:.5px;margin-bottom:4px;background:var(--mummy-soft);color:var(--mummy)}
+  .ctag{display:inline-block;font-size:13px;font-weight:900;border-radius:6px;padding:3px 9px;letter-spacing:.5px;margin-bottom:5px;background:var(--mummy-soft);color:var(--mummy)}
   .ctag.beta{background:var(--beta-soft);color:var(--beta)}
   html[lang=hi] .ctag{letter-spacing:0;font-family:'Noto Sans Devanagari',sans-serif}
   .ctitle{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:4px;word-break:break-word}
   html[lang=hi] .ctitle{font-family:'Noto Sans Devanagari',serif}
-  .cdate-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#3D0A22;font-weight:600}
-  .cdate-item{display:inline-flex;align-items:center;gap:3px}
-  .cdate-item .lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .cdate-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:19px;color:#3D0A22;font-weight:800}
+  .cdate-item{display:inline-flex;align-items:center;gap:4px}
+  .cdate-item .lbl{font-size:13px;font-weight:900;color:var(--sub);text-transform:uppercase;letter-spacing:.5px}
   html[lang=hi] .cdate-item .lbl{letter-spacing:0;text-transform:none}
-  .cdate-arrow{color:var(--muted);font-weight:400}
+  .cdate-arrow{color:var(--muted);font-weight:700;font-size:18px}
   .cpct{border-radius:12px;padding:5px 11px;text-align:center;min-width:50px;border:1.5px solid;flex-shrink:0}
   .cpct span{font-size:15px;font-weight:800}
   .cbar-wrap{margin-top:10px;position:relative}
   .cbar-bg{height:11px;background:var(--mummy-mid);border-radius:10px;overflow:hidden;cursor:pointer;position:relative;touch-action:manipulation}
   .cbar-bg:active{filter:brightness(.95)}
   .cbar-fill{height:100%;border-radius:10px;transition:width .25s;pointer-events:none}
-  .cbar-hint{font-size:10px;color:var(--muted);margin-top:3px;text-align:center;font-style:italic}
+  .cbar-hint{font-size:12px;font-weight:700;color:var(--muted);margin-top:3px;text-align:center;font-style:italic}
   html[lang=hi] .cbar-hint{font-style:normal;font-family:'Noto Sans Devanagari',sans-serif}
-  .ccount{display:flex;gap:8px;margin-top:9px;font-size:11px;color:var(--sub);font-weight:600}
+  .ccount{display:flex;gap:8px;margin-top:9px;font-size:13px;color:var(--sub);font-weight:800}
   .ccount span{display:inline-flex;align-items:center;gap:3px;background:#FFF0F5;border-radius:10px;padding:2px 8px}
-  .overdue-pill{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);color:#92400E;font-size:10px;font-weight:800;border-radius:12px;padding:2px 8px 2px 6px;border:1px solid #FBBF24;letter-spacing:.3px;animation:overduePulse 2.5s ease-in-out infinite;line-height:1.2}
+  .overdue-pill{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#FFFBEB,#FEF3C7);color:#92400E;font-size:12px;font-weight:900;border-radius:12px;padding:3px 9px 3px 7px;border:1px solid #FBBF24;letter-spacing:.3px;animation:overduePulse 2.5s ease-in-out infinite;line-height:1.2}
   .overdue-pill .star{display:inline-block;animation:starTwinkle 1.4s ease-in-out infinite;font-size:11px;filter:drop-shadow(0 0 2px rgba(251,191,36,.8))}
-  html[lang=hi] .overdue-pill{font-family:'Noto Sans Devanagari',sans-serif;letter-spacing:0;font-size:11px}
+  html[lang=hi] .overdue-pill{font-family:'Noto Sans Devanagari',sans-serif;letter-spacing:0;font-size:13px}
   @keyframes overduePulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0)}50%{box-shadow:0 0 6px 1px rgba(245,158,11,.35)}}
   @keyframes starTwinkle{0%,100%{opacity:.6;transform:scale(.9) rotate(0deg)}50%{opacity:1;transform:scale(1.25) rotate(72deg)}}
   .overdue-pill-lg{padding:4px 10px 4px 8px;font-size:12px;border-radius:14px}
@@ -237,13 +237,13 @@
     <div id="profiles">
       <div class="pcard beta active" data-who="beta" onclick="selectWho('beta')">
         <div class="pic">👦</div>
-        <div class="pname" data-i18n="beta_name">Pandit Beta Ji</div>
-        <div class="prole" data-i18n="beta_role">Aapka Beta</div>
+        <div class="pname" data-i18n="beta_name">Kartik</div>
+        <div class="prole" data-i18n="beta_role"></div>
       </div>
       <div class="pcard mummy" data-who="mummy" onclick="selectWho('mummy')">
         <div class="pic">👩</div>
         <div class="pname" data-i18n="mummy_name">Mummy Ji</div>
-        <div class="prole" data-i18n="mummy_role">Pyaari Maa</div>
+        <div class="prole" data-i18n="mummy_role"></div>
       </div>
     </div>
     <div id="overall-wrap">
@@ -273,7 +273,7 @@
       </div>
       <label class="flabel" data-i18n="whose_task">Kiska kaam hai?</label>
       <div class="who-toggle">
-        <div class="who-opt beta sel" data-who="beta" onclick="pickWho('beta')"><span class="emoji">👦</span><span data-i18n="beta_name">Pandit Beta Ji</span></div>
+        <div class="who-opt beta sel" data-who="beta" onclick="pickWho('beta')"><span class="emoji">👦</span><span data-i18n="beta_name">Kartik</span></div>
         <div class="who-opt mummy" data-who="mummy" onclick="pickWho('mummy')"><span class="emoji">👩</span><span data-i18n="mummy_name">Mummy Ji</span></div>
       </div>
       <label class="flabel" data-i18n="task_name">Kaam ka naam</label>
@@ -367,7 +367,7 @@
             <button class="pm-photo-btn" onclick="document.getElementById('pm-file').click()">📷 <span data-i18n="photo">Photo</span></button>
             <input id="pm-file" type="file" accept="image/*" capture="environment" style="display:none" onchange="addPostPhoto(this)"/>
             <select class="pm-who-sel" id="pm-who">
-              <option value="beta">👦 Pandit Beta Ji</option>
+              <option value="beta">👦 Kartik</option>
               <option value="mummy">👩 Mummy Ji</option>
             </select>
             <button class="pm-post" onclick="postMessage()" data-i18n="post">Post →</button>
@@ -391,7 +391,7 @@
 <script>
 const T={
   en:{
-    brand:'Parivaar Tasks',beta_name:'Pandit Beta Ji',beta_role:'Aapka Beta',mummy_name:'Mummy Ji',mummy_role:'Pyaari Maa',
+    brand:'Parivaar Tasks',beta_name:'Kartik',beta_role:'',mummy_name:'Mummy Ji',mummy_role:'',
     overall_label:'Saath mein progress',
     filter_all:'All',filter_beta:"Beta Ji's",filter_mummy:"Mummy Ji's",
     empty_title:'Koi kaam nahi hai abhi',empty_sub:'+ button dabaa ke naya kaam add karein',
@@ -415,8 +415,8 @@ const T={
     msg_needed:'Message ya photo zaroori hai',name_needed:'Kaam ka naam zaroori hai',
     storage_full:'Storage bhar gaya — purani photos delete karein',
     no_date:'Koi date nahi',
-    greet_beta:'Namaste Pandit Beta Ji 👦',greet_mummy:'Namaste Mummy Ji 🙏',
-    tag_beta:'PANDIT BETA JI',tag_mummy:'MUMMY JI',
+    greet_beta:'Namaste Kartik 👦',greet_mummy:'Namaste Mummy Ji 🙏',
+    tag_beta:'KARTIK',tag_mummy:'MUMMY JI',
     type_text:'TEXT',type_photo:'PHOTO',type_voice:'VOICE',
     overdue:'OVERDUE',delete_word:'delete',date_locale:'en-IN',
     tr_hint:'🔄 dabaa ke Hindi mein convert karein',
@@ -429,7 +429,7 @@ const T={
     sync_on:'Sync is ON ✓',sync_off:'Sync turned off',sync_set:'Enter Sync URL in ⚙ to sync phones'
   },
   hi:{
-    brand:'परिवार के काम',beta_name:'पंडित बेटा जी',beta_role:'आपका बेटा',mummy_name:'मम्मी जी',mummy_role:'प्यारी माँ',
+    brand:'परिवार के काम',beta_name:'कार्तिक',beta_role:'',mummy_name:'मम्मी जी',mummy_role:'',
     overall_label:'साथ में प्रगति',
     filter_all:'सब',filter_beta:'बेटा जी के',filter_mummy:'मम्मी जी के',
     empty_title:'अभी कोई काम नहीं है',empty_sub:'+ बटन दबाकर नया काम जोड़ें',
@@ -453,8 +453,8 @@ const T={
     msg_needed:'संदेश या फोटो ज़रूरी है',name_needed:'काम का नाम ज़रूरी है',
     storage_full:'स्टोरेज भर गया — पुरानी फोटो हटाएं',
     no_date:'कोई तारीख नहीं',
-    greet_beta:'नमस्ते पंडित बेटा जी 👦',greet_mummy:'नमस्ते मम्मी जी 🙏',
-    tag_beta:'पंडित बेटा जी',tag_mummy:'मम्मी जी',
+    greet_beta:'नमस्ते कार्तिक 👦',greet_mummy:'नमस्ते मम्मी जी 🙏',
+    tag_beta:'कार्तिक',tag_mummy:'मम्मी जी',
     type_text:'लिखित',type_photo:'फोटो',type_voice:'आवाज़',
     overdue:'देर हो गई',delete_word:'हटाएं',date_locale:'hi-IN',
     tr_hint:'🔄 दबाकर हिंदी में बदलें',
