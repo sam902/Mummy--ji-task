@@ -505,48 +505,60 @@ function mergeTasks(local,remote){
   return Object.keys(map).map(function(k){return map[k]});
 }
 function persistLocal(){try{localStorage.setItem('mk_tasks_v2',JSON.stringify(state.tasks));localStorage.setItem('mk_rev',String(state.rev))}catch(e){}}
-function schedulePush(){if(!state.syncUrl)return;clearTimeout(state.pushTimer);state.pushTimer=setTimeout(cloudPush,800)}
-// JSONP read: loads via a <script> tag, which is never blocked by CORS.
-var _jsonpN=0;
-function jsonp(params){
-  return new Promise(function(resolve){
-    if(!state.syncUrl){resolve(null);return}
-    var cb='mk_cb_'+(++_jsonpN)+'_'+Date.now();
-    var s=document.createElement('script');
-    var done=false;
-    function finish(v){if(done)return;done=true;try{delete window[cb]}catch(e){window[cb]=undefined}if(s.parentNode)s.parentNode.removeChild(s);resolve(v)}
-    window[cb]=function(data){finish(data)};
-    s.onerror=function(){finish(null)};
-    setTimeout(function(){finish(null)},15000);
-    s.src=state.syncUrl+(state.syncUrl.indexOf('?')<0?'?':'&')+params+'&callback='+cb+'&_='+Date.now();
-    document.body.appendChild(s);
-  });
+function schedulePush(){if(!state.syncUrl)return;clearTimeout(state.pushTimer);state.pushTimer=setTimeout(cloudPush,700)}
+// Plain CORS fetch works against the Apps Script endpoint for both read and
+// write, so no JSONP is needed. The server replaces the whole list on save,
+// so before every push we fetch the latest, merge, then send the full set —
+// that way two phones accumulate each other's tasks instead of overwriting.
+function cloudLoad(){
+  if(!state.syncUrl)return Promise.resolve(null);
+  return fetch(state.syncUrl+'?action=load&_='+Date.now(),{method:'GET'})
+    .then(function(r){return r.json()})
+    .catch(function(){return null});
 }
-// Write: fire-and-forget POST (no-cors). The server merges by id+updatedAt,
-// so nothing is lost even if both phones write at once. We re-read after.
+function applyRemote(res){
+  if(!res||!Array.isArray(res.tasks))return false;
+  if(!state._syncedOnce){state._syncedOnce=true;toast(t('sync_on'))}
+  var before=JSON.stringify(state.tasks);
+  state.tasks=mergeTasks(state.tasks,res.tasks);
+  if(typeof res.rev==='number')state.rev=res.rev;
+  persistLocal();
+  if(JSON.stringify(state.tasks)!==before){render();if(isDetailOpen())renderDetail()}
+  return true;
+}
+var _pushing=false;
 function cloudPush(){
-  if(!state.syncUrl)return;
-  try{
-    fetch(state.syncUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',tasks:state.tasks})});
-  }catch(e){}
-  clearTimeout(state._pullAfter);state._pullAfter=setTimeout(cloudPull,1800);
+  if(!state.syncUrl||_pushing)return;
+  _pushing=true;
+  cloudLoad().then(function(res){
+    var merged=res&&Array.isArray(res.tasks)?mergeTasks(state.tasks,res.tasks):state.tasks;
+    state.tasks=merged;persistLocal();
+    return fetch(state.syncUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',tasks:merged})})
+      .then(function(r){return r.json()});
+  }).then(function(saved){
+    _pushing=false;
+    if(saved&&Array.isArray(saved.tasks)){var b=JSON.stringify(state.tasks);state.tasks=mergeTasks(state.tasks,saved.tasks);if(typeof saved.rev==='number')state.rev=saved.rev;persistLocal();if(JSON.stringify(state.tasks)!==b){render();if(isDetailOpen())renderDetail()}}
+  }).catch(function(){_pushing=false});
 }
 function cloudPull(){
-  return jsonp('action=load').then(function(res){
-    if(!res||!Array.isArray(res.tasks))return;
-    var before=JSON.stringify(state.tasks);
-    state.tasks=mergeTasks(state.tasks,res.tasks);
-    state.rev=res.rev;persistLocal();
-    if(JSON.stringify(state.tasks)!==before){render();if(isDetailOpen())renderDetail()}
-    if(JSON.stringify(state.tasks)!==JSON.stringify(res.tasks))schedulePush();
+  return cloudLoad().then(function(res){
+    var ok=applyRemote(res);
+    // if we hold tasks the cloud is missing, push them up
+    if(ok){var ids=function(a){return a.map(function(x){return x.id}).sort().join(',')};if(ids(state.tasks)!==ids(res.tasks))schedulePush();}
+    return ok;
   });
 }
 function pollRev(){
-  if(!state.syncUrl)return;
-  jsonp('action=rev').then(function(res){if(res&&typeof res.rev==='number'&&res.rev!==state.rev)cloudPull()});
+  if(!state.syncUrl||_pushing)return;
+  fetch(state.syncUrl+'?action=rev&_='+Date.now(),{method:'GET'})
+    .then(function(r){return r.json()})
+    .then(function(res){if(res&&typeof res.rev==='number'&&res.rev!==state.rev)cloudPull()})
+    .catch(function(){});
 }
 function startSync(){
   if(!state.syncUrl)return;
+  // Push first so this phone's own tasks reach the cloud, then pull merges the rest.
+  if(state.tasks.length)cloudPush();
   cloudPull();
   if(!state._pollId)state._pollId=setInterval(pollRev,5000);
 }
